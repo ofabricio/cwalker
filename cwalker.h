@@ -9,6 +9,8 @@ int walker_int_out(char** str, int* out);
 int walker_float_out(char** str, float* out);
 int walker_int(char** str);
 int walker_float(char** str);
+int walker_peek(char** str, const char* mark, const int cond);
+int walker_undo(char** str, const char* mark, const int cond);
 int walker_line(char** str);
 int walker_until(char** str, const char* pattern);
 int walker_untilc(char** str, const char c);
@@ -32,6 +34,23 @@ int walker_more(const char* str);
 const char* walker_mark(const char* str);
 int walker_mark_len(const char* str, const char* mark);
 int walker_back(char** str, const char* mark);
+
+#define walker_peekm(str, cond) walker_peek(str, walker_mark(*(str)), cond)
+#define walker_undom(str, cond) walker_undo(str, walker_mark(*(str)), cond)
+
+int walker_peek(char** str, const char* mark, const int cond)
+{
+    walker_back(str, mark);
+    return cond;
+}
+
+int walker_undo(char** str, const char* mark, const int cond)
+{
+    if (!cond) {
+        walker_back(str, mark);
+    }
+    return cond;
+}
 
 int walker_int_out(char** str, int* out)
 {

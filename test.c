@@ -113,6 +113,24 @@ void test_int_out()
     ASSERT_OUT(walker_int_out, "-", 0, 0);
 }
 
+void test_peek()
+{
+    char* i = "ab";
+    assert(walker_peekm(&i, walker_matchc(&i, 'x') && walker_matchc(&i, 'y')) == 0);
+    assert(strlen(i) == 2);
+    assert(walker_peekm(&i, walker_matchc(&i, 'a') && walker_matchc(&i, 'b')) == 1);
+    assert(strlen(i) == 2);
+}
+
+void test_undo()
+{
+    char* i = "1+2";
+    assert(walker_undom(&i, walker_matchc(&i, '1') && walker_matchc(&i, '+') && walker_matchc(&i, '3')) == 0);
+    assert(strlen(i) == 3);
+    assert(walker_undom(&i, walker_matchc(&i, '1') && walker_matchc(&i, '+') && walker_matchc(&i, '2')) == 1);
+    assert(strlen(i) == 0);
+}
+
 void test_line()
 {
     char* i = "\n";
@@ -373,6 +391,8 @@ int main()
     example();
     test_float_out();
     test_int_out();
+    test_peek();
+    test_undo();
     test_line();
     test_until();
     test_untilc();
