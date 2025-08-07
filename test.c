@@ -113,6 +113,24 @@ void test_int_out()
     ASSERT_OUT(walker_int_out, "-", 0, 0);
 }
 
+void test_0n()
+{
+    char* i = "abcabc";
+    assert(walker_0n(walker_match(&i, "x")) == 1);
+    assert(strlen(i) == 6);
+    assert(walker_0n(walker_match(&i, "abc")) == 1);
+    assert(strlen(i) == 0);
+}
+
+void test_1n()
+{
+    char* i = "abcABC";
+    assert(walker_1n(walker_match(&i, "x")) == 0);
+    assert(strlen(i) == 6);
+    assert(walker_1n(walker_match(&i, "abc")) == 1);
+    assert(strlen(i) == 3);
+}
+
 void test_peek()
 {
     char* i = "ab";
@@ -427,6 +445,8 @@ int main()
     example();
     test_float_out();
     test_int_out();
+    test_0n();
+    test_1n();
     test_peek();
     test_undo();
     test_string();

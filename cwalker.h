@@ -36,6 +36,8 @@ const char* walker_mark(const char* str);
 int walker_mark_len(const char* str, const char* mark);
 int walker_back(char** str, const char* mark);
 
+#define walker_0n(matcher) ({ while (matcher) { } 1; })
+#define walker_1n(matcher) ({ int c = 0; while (matcher) { c++; } c > 0; })
 #define walker_peekm(str, cond) walker_peek(str, walker_mark(*(str)), cond)
 #define walker_undom(str, cond) walker_undo(str, walker_mark(*(str)), cond)
 
