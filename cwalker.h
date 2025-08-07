@@ -74,8 +74,7 @@ int walker_space(char** str)
 int walker_while_range(char** str, char min, char max)
 {
     auto m = walker_mark(*str);
-    while (**str >= min && **str <= max)
-        walker_next(str);
+    while (**str >= min && **str <= max && walker_any(str)) { }
     return walker_mark_len(*str, m);
 }
 
