@@ -113,6 +113,17 @@ void test_int_out()
     ASSERT_OUT(walker_int_out, "-", 0, 0);
 }
 
+void test_until()
+{
+    char* i = "abc123";
+
+    assert(walker_until(&i, "abc") == 0);
+    assert(strlen(i) == 6);
+
+    assert(walker_until(&i, "123") == 3);
+    assert(strlen(i) == 3);
+}
+
 void test_untilc()
 {
     char* i = "abc0";
@@ -340,6 +351,7 @@ int main()
     example();
     test_float_out();
     test_int_out();
+    test_until();
     test_untilc();
     test_untilr();
     test_not();
