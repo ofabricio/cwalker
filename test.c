@@ -113,6 +113,24 @@ void test_int_out()
     ASSERT_OUT(walker_int_out, "-", 0, 0);
 }
 
+void test_untilr()
+{
+    char* i = "abc0";
+
+    assert(walker_untilr(&i, 'a', 'a') == 0);
+    assert(strlen(i) == 4);
+
+    assert(walker_untilr(&i, 'a', 'z') == 0);
+    assert(strlen(i) == 4);
+
+    assert(walker_untilr(&i, '0', '0') == 3);
+    assert(strlen(i) == 1);
+
+    i = "abc9";
+    assert(walker_untilr(&i, '0', '9') == 3);
+    assert(strlen(i) == 1);
+}
+
 void test_not()
 {
     char* i = "aNot";
@@ -311,6 +329,7 @@ int main()
     example();
     test_float_out();
     test_int_out();
+    test_untilr();
     test_not();
     test_notc();
     test_notr();
