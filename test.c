@@ -157,6 +157,18 @@ void test_matchc()
     assert(strlen(i) == 0);
 }
 
+void test_matchr()
+{
+    char* i = "am";
+
+    assert(walker_matchr(&i, '0', '9') == 0);
+    assert(strlen(i) == 2);
+    assert(walker_matchr(&i, 'a', 'a') == 1);
+    assert(strlen(i) == 1);
+    assert(walker_matchr(&i, 'a', 'z') == 1);
+    assert(strlen(i) == 0);
+}
+
 void test_equal()
 {
     char* i = "one";
@@ -269,6 +281,7 @@ int main()
     test_space();
     test_match();
     test_matchc();
+    test_matchr();
     test_equal();
     test_equaln();
     test_equalc();

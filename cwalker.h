@@ -12,6 +12,7 @@ int walker_float(char** str);
 int walker_while_range(char** str, char min, char max);
 int walker_match(char** str, const char* pattern);
 int walker_matchc(char** str, const char c);
+int walker_matchr(char** str, const char min, const char max);
 int walker_equal(const char* str, const char* pattern);
 int walker_equaln(const char* str, const char* pattern, int n);
 int walker_equalc(const char* str, const char c);
@@ -76,13 +77,19 @@ int walker_space(char** str)
 int walker_while_range(char** str, char min, char max)
 {
     auto m = walker_mark(*str);
-    while (**str >= min && **str <= max && walker_any(str)) { }
+    while (walker_matchr(str, min, max)) { }
     return walker_mark_len(*str, m);
 }
 
 int walker_match(char** str, const char* pattern)
 {
     int n = walker_equal(*str, pattern);
+    return walker_adv(str, n);
+}
+
+int walker_matchr(char** str, const char min, const char max)
+{
+    int n = walker_equalr(*str, min, max);
     return walker_adv(str, n);
 }
 
