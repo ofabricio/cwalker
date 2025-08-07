@@ -11,6 +11,7 @@ int walker_int(char** str);
 int walker_float(char** str);
 int walker_not(char** str, const char* pattern);
 int walker_notc(char** str, const char c);
+int walker_notr(char** str, const char min, const char max);
 int walker_whiler(char** str, const char min, const char max);
 int walker_match(char** str, const char* pattern);
 int walker_matchc(char** str, const char c);
@@ -84,6 +85,11 @@ int walker_not(char** str, const char* pattern)
 int walker_notc(char** str, const char c)
 {
     return !walker_equalc(*str, c) && walker_any(str);
+}
+
+int walker_notr(char** str, const char min, const char max)
+{
+    return !walker_equalr(*str, min, max) && walker_any(str);
 }
 
 int walker_whiler(char** str, const char min, const char max)

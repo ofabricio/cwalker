@@ -125,6 +125,18 @@ void test_not()
     assert(strlen(i) == 3);
 }
 
+void test_notr()
+{
+    char* i = "a1";
+
+    assert(walker_notr(&i, 'a', 'a') == 0);
+    assert(strlen(i) == 2);
+    assert(walker_notr(&i, 'a', 'z') == 0);
+    assert(strlen(i) == 2);
+    assert(walker_notr(&i, '0', '9') == 1);
+    assert(strlen(i) == 1);
+}
+
 void test_notc()
 {
     char* i = "ab";
@@ -301,6 +313,7 @@ int main()
     test_int_out();
     test_not();
     test_notc();
+    test_notr();
     test_whiler();
     test_space();
     test_match();
