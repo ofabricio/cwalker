@@ -131,6 +131,42 @@ void test_undo()
     assert(strlen(i) == 0);
 }
 
+void test_string()
+{
+    char* i = "\"\"";
+
+    assert(walker_string(&i, '"') == 2);
+    assert(strlen(i) == 0);
+
+    i = "\"a\"";
+    assert(walker_string(&i, '"') == 3);
+    assert(strlen(i) == 0);
+
+    i = "\"a\\\"b\\\"c\"";
+    assert(walker_string(&i, '"') == 9);
+    assert(strlen(i) == 0);
+
+    i = "\"a\\\nb\\\"c\"";
+    assert(walker_string(&i, '"') == 9);
+    assert(strlen(i) == 0);
+
+    i = "\"a";
+    assert(walker_string(&i, '"') == 0);
+    assert(strlen(i) == 2);
+
+    i = "''";
+    assert(walker_string(&i, '\'') == 2);
+    assert(strlen(i) == 0);
+
+    i = "'a'";
+    assert(walker_string(&i, '\'') == 3);
+    assert(strlen(i) == 0);
+
+    i = "'a\\'bc'";
+    assert(walker_string(&i, '\'') == 7);
+    assert(strlen(i) == 0);
+}
+
 void test_line()
 {
     char* i = "\n";
@@ -393,6 +429,7 @@ int main()
     test_int_out();
     test_peek();
     test_undo();
+    test_string();
     test_line();
     test_until();
     test_untilc();

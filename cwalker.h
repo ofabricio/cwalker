@@ -11,6 +11,7 @@ int walker_int(char** str);
 int walker_float(char** str);
 int walker_peek(char** str, const char* mark, const int cond);
 int walker_undo(char** str, const char* mark, const int cond);
+int walker_string(char** str, const char quote);
 int walker_line(char** str);
 int walker_until(char** str, const char* pattern);
 int walker_untilc(char** str, const char c);
@@ -93,6 +94,18 @@ int walker_float(char** str)
             return walker_back(str, m);
     }
     return walker_mark_len(*str, m);
+}
+
+int walker_string(char** str, const char quote)
+{
+    auto m = walker_mark(*str);
+    if (walker_matchc(str, quote)) {
+        while ((!(walker_equalc(*str, quote) || walker_equalc(*str, '\\')) || walker_matchc(str, '\\')) && walker_any(str)) { }
+    }
+    if (walker_matchc(str, quote)) {
+        return walker_mark_len(*str, m);
+    }
+    return walker_back(str, m);
 }
 
 int walker_space(char** str)
