@@ -189,6 +189,18 @@ void test_equalc()
     assert(strlen(i) == 1);
 }
 
+void test_equalr()
+{
+    char* i = "a";
+
+    assert(walker_equalr(i, '0', '9') == 0);
+    assert(strlen(i) == 1);
+    assert(walker_equalr(i, 'a', 'a') == 1);
+    assert(strlen(i) == 1);
+    assert(walker_equalr(i, 'a', 'z') == 1);
+    assert(strlen(i) == 1);
+}
+
 void test_any()
 {
     char* i = "hi";
@@ -260,6 +272,7 @@ int main()
     test_equal();
     test_equaln();
     test_equalc();
+    test_equalr();
     test_any();
     test_adv();
     test_next();
