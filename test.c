@@ -113,6 +113,16 @@ void test_int_out()
     ASSERT_OUT(walker_int_out, "-", 0, 0);
 }
 
+void test_notc()
+{
+    char* i = "ab";
+
+    assert(walker_notc(&i, 'a') == 0);
+    assert(strlen(i) == 2);
+    assert(walker_notc(&i, 'x') == 1);
+    assert(strlen(i) == 1);
+}
+
 void test_whiler()
 {
     char* i = "abc123def";
@@ -277,6 +287,7 @@ int main()
     example();
     test_float_out();
     test_int_out();
+    test_notc();
     test_whiler();
     test_space();
     test_match();
