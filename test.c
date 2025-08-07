@@ -113,6 +113,18 @@ void test_int_out()
     ASSERT_OUT(walker_int_out, "-", 0, 0);
 }
 
+void test_not()
+{
+    char* i = "aNot";
+
+    assert(walker_not(&i, "a") == 0);
+    assert(strlen(i) == 4);
+    assert(walker_not(&i, "Not") == 1);
+    assert(strlen(i) == 3);
+    assert(walker_not(&i, "Not") == 0);
+    assert(strlen(i) == 3);
+}
+
 void test_notc()
 {
     char* i = "ab";
@@ -287,6 +299,7 @@ int main()
     example();
     test_float_out();
     test_int_out();
+    test_not();
     test_notc();
     test_whiler();
     test_space();

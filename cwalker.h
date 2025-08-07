@@ -9,6 +9,7 @@ int walker_int_out(char** str, int* out);
 int walker_float_out(char** str, float* out);
 int walker_int(char** str);
 int walker_float(char** str);
+int walker_not(char** str, const char* pattern);
 int walker_notc(char** str, const char c);
 int walker_whiler(char** str, const char min, const char max);
 int walker_match(char** str, const char* pattern);
@@ -73,6 +74,11 @@ int walker_float(char** str)
 int walker_space(char** str)
 {
     return walker_whiler(str, '\0' + 1, ' ');
+}
+
+int walker_not(char** str, const char* pattern)
+{
+    return !walker_equal(*str, pattern) && walker_any(str);
 }
 
 int walker_notc(char** str, const char c)
