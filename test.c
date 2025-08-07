@@ -3,25 +3,72 @@
 
 #include "cwalker.h"
 
+int expr(char** str, int* out);
+int term(char** str, int* out);
+int fact(char** str, int* out);
+
+void example_expr()
+{
+    char* str = "(6-1)*4*2+(1+3)*(16/2)";
+    int out = 0;
+    int ok = expr(&str, &out);
+    assert(ok == 1);
+    assert(out == 72);
+}
+
+int expr(char** str, int* out)
+{
+    if (term(str, out)) {
+        int r;
+        if (walker_matchc(str, '+') && expr(str, &r)) {
+            *out += r;
+        } else if (walker_matchc(str, '-') && expr(str, &r)) {
+            *out -= r;
+        }
+        return 1;
+    }
+    return 0;
+}
+
+int term(char** str, int* out)
+{
+    if (fact(str, out)) {
+        int r;
+        if (walker_matchc(str, '*') && term(str, &r)) {
+            *out *= r;
+        } else if (walker_matchc(str, '/') && term(str, &r)) {
+            *out /= r;
+        }
+        return 1;
+    }
+    return 0;
+}
+
+int fact(char** str, int* out)
+{
+    return (walker_matchc(str, '(') && expr(str, out) && walker_matchc(str, ')'))
+        || walker_int_out(str, out);
+}
+
 void example()
 {
-    char* src = "point(10 20)\n"
+    char* str = "point(10 20)\n"
                 "vector(-30 -40)";
 
-    while (walker_more(src)) {
-        char* m = src;
-        if (walker_while_range(&src, 'a', 'z')) {
-            int len = walker_mark_len(src, m);
+    while (walker_more(str)) {
+        auto m = walker_mark(str);
+        if (walker_while_range(&str, 'a', 'z')) {
+            int len = walker_mark_len(str, m);
             int x = 0, y = 0;
-            if (walker_match(&src, "(")
-                && walker_int_out(&src, &x)
-                && walker_space(&src)
-                && walker_int_out(&src, &y)
-                && walker_match(&src, ")")) {
-                printf("Example match: name=%.*s x=%d y=%d\n", len, m, x, y);
+            if (walker_match(&str, "(")
+                && walker_int_out(&str, &x)
+                && walker_space(&str)
+                && walker_int_out(&str, &y)
+                && walker_match(&str, ")")) {
+                printf("example(): name=%.*s, x=%d, y=%d\n", len, m, x, y);
             }
         }
-        walker_next(&src);
+        walker_next(&str);
     }
 }
 
@@ -157,10 +204,9 @@ void test_adv()
 void test_next()
 {
     char* i = "hi";
-
-    assert(walker_next(&i) == 1);
+    walker_next(&i);
     assert(strlen(i) == 1);
-    assert(walker_next(&i) == 1);
+    walker_next(&i);
     assert(strlen(i) == 0);
 }
 
@@ -185,6 +231,7 @@ void test_mark_len()
 
 int main()
 {
+    example_expr();
     example();
     test_float_out();
     test_int_out();
