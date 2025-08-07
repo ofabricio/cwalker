@@ -18,6 +18,7 @@ int walker_equalc(const char* str, const char c);
 int walker_any(char** str);
 int walker_adv(char** str, size_t n);
 void walker_next(char** str);
+char walker_curr(const char* str);
 int walker_more(const char* str);
 const char* walker_mark(const char* str);
 int walker_mark_len(const char* str, const char* mark);
@@ -122,6 +123,11 @@ int walker_adv(char** str, size_t n)
 void walker_next(char** str)
 {
     (*str)++;
+}
+
+char walker_curr(const char* str)
+{
+    return *str;
 }
 
 int walker_more(const char* str)

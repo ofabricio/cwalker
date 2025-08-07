@@ -222,6 +222,12 @@ void test_next()
     assert(strlen(i) == 0);
 }
 
+void test_curr()
+{
+    assert(walker_curr("a") == 'a');
+    assert(walker_curr("") == '\0');
+}
+
 void test_more()
 {
     assert(walker_more("a") == 1);
@@ -257,6 +263,7 @@ int main()
     test_any();
     test_adv();
     test_next();
+    test_curr();
     test_more();
     test_mark_len();
     return 0;
