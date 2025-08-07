@@ -9,7 +9,7 @@ int walker_int_out(char** str, int* out);
 int walker_float_out(char** str, float* out);
 int walker_int(char** str);
 int walker_float(char** str);
-int walker_while_range(char** str, char min, char max);
+int walker_whiler(char** str, const char min, const char max);
 int walker_match(char** str, const char* pattern);
 int walker_matchc(char** str, const char c);
 int walker_matchr(char** str, const char min, const char max);
@@ -48,7 +48,7 @@ int walker_int(char** str)
 {
     auto m = walker_mark(*str);
     walker_matchc(str, '-') || walker_matchc(str, '+');
-    if (walker_while_range(str, '0', '9'))
+    if (walker_whiler(str, '0', '9'))
         return walker_mark_len(*str, m);
     return walker_back(str, m);
 }
@@ -57,13 +57,13 @@ int walker_float(char** str)
 {
     auto m = walker_mark(*str);
     walker_matchc(str, '-') || walker_matchc(str, '+');
-    if (walker_matchc(str, '.') && !walker_while_range(str, '0', '9'))
+    if (walker_matchc(str, '.') && !walker_whiler(str, '0', '9'))
         return walker_back(str, m);
-    if (walker_while_range(str, '0', '9'))
-        walker_matchc(str, '.') && walker_while_range(str, '0', '9');
+    if (walker_whiler(str, '0', '9'))
+        walker_matchc(str, '.') && walker_whiler(str, '0', '9');
     if (walker_matchc(str, 'e') || walker_matchc(str, 'E')) {
         walker_matchc(str, '-') || walker_matchc(str, '+');
-        if (!walker_while_range(str, '0', '9'))
+        if (!walker_whiler(str, '0', '9'))
             return walker_back(str, m);
     }
     return walker_mark_len(*str, m);
@@ -71,10 +71,10 @@ int walker_float(char** str)
 
 int walker_space(char** str)
 {
-    return walker_while_range(str, '\0' + 1, ' ');
+    return walker_whiler(str, '\0' + 1, ' ');
 }
 
-int walker_while_range(char** str, char min, char max)
+int walker_whiler(char** str, const char min, const char max)
 {
     auto m = walker_mark(*str);
     while (walker_matchr(str, min, max)) { }

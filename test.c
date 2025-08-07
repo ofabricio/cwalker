@@ -57,7 +57,7 @@ void example()
 
     while (walker_more(str)) {
         auto m = walker_mark(str);
-        if (walker_while_range(&str, 'a', 'z')) {
+        if (walker_whiler(&str, 'a', 'z')) {
             int len = walker_mark_len(str, m);
             int x = 0, y = 0;
             if (walker_match(&str, "(")
@@ -113,13 +113,13 @@ void test_int_out()
     ASSERT_OUT(walker_int_out, "-", 0, 0);
 }
 
-void test_while_range()
+void test_whiler()
 {
     char* i = "abc123def";
 
-    assert(walker_while_range(&i, 'a', 'z') == 3);
+    assert(walker_whiler(&i, 'a', 'z') == 3);
     assert(strlen(i) == 6);
-    assert(walker_while_range(&i, '0', '9') == 3);
+    assert(walker_whiler(&i, '0', '9') == 3);
     assert(strlen(i) == 3);
 }
 
@@ -277,7 +277,7 @@ int main()
     example();
     test_float_out();
     test_int_out();
-    test_while_range();
+    test_whiler();
     test_space();
     test_match();
     test_matchc();

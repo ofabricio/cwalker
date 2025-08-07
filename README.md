@@ -17,7 +17,7 @@ int main()
 
     while (walker_more(str)) {
         auto m = walker_mark(str);
-        if (walker_while_range(&str, 'a', 'z')) {
+        if (walker_whiler(&str, 'a', 'z')) {
             int len = walker_mark_len(str, m);
             int x = 0, y = 0;
             if (walker_match(&str, "(")
