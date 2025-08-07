@@ -66,18 +66,15 @@ int walker_float(char** str)
     return walker_mark_len(*str, m);
 }
 
+int walker_space(char** str)
+{
+    return walker_while_range(str, '\0' + 1, ' ');
+}
+
 int walker_while_range(char** str, char min, char max)
 {
     auto m = walker_mark(*str);
     while (**str >= min && **str <= max)
-        walker_next(str);
-    return walker_mark_len(*str, m);
-}
-
-int walker_space(char** str)
-{
-    auto m = walker_mark(*str);
-    while (walker_more(*str) && **str <= ' ')
         walker_next(str);
     return walker_mark_len(*str, m);
 }
