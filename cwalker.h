@@ -28,7 +28,7 @@ int walker_equaln(const char* str, const char* pattern, int n);
 int walker_equalc(const char* str, const char c);
 int walker_equalr(const char* str, const char min, const char max);
 int walker_any(char** str);
-int walker_adv(char** str, size_t n);
+int walker_adv(char** str, const size_t n);
 void walker_next(char** str);
 char walker_curr(const char* str);
 int walker_more(const char* str);
@@ -209,7 +209,7 @@ int walker_any(char** str)
     return 0;
 }
 
-int walker_adv(char** str, size_t n)
+int walker_adv(char** str, const size_t n)
 {
     *str += n;
     return n;
