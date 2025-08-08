@@ -311,6 +311,18 @@ void test_match()
     assert(strlen(i) == 0);
 }
 
+void test_matchn()
+{
+    char* i = "onetwo";
+
+    assert(walker_matchn(&i, "one", 3) == 3);
+    assert(strlen(i) == 3);
+    assert(walker_matchn(&i, "three", 5) == 0);
+    assert(strlen(i) == 3);
+    assert(walker_matchn(&i, "two", 3) == 3);
+    assert(strlen(i) == 0);
+}
+
 void test_matchc()
 {
     char* i = "one";
@@ -460,6 +472,7 @@ int main()
     test_whiler();
     test_space();
     test_match();
+    test_matchn();
     test_matchc();
     test_matchr();
     test_equal();
