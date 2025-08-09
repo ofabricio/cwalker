@@ -4,26 +4,27 @@
 
 #include "cwalker.h"
 
-int expr(char** str, int* out);
-int term(char** str, int* out);
-int fact(char** str, int* out);
+int expr(char** inp, int* out);
+int term(char** inp, int* out);
+int fact(char** inp, int* out);
 
 void example_expr()
 {
-    char* str = "(6-1)*4*2+(1+3)*(16/2)";
+    char* inp = "(6-1)*4*2+(1+3)*(16/2)";
+
     int out = 0;
-    int ok = expr(&str, &out);
+    int ok = expr(&inp, &out);
     assert(ok == 1);
     assert(out == 72);
 }
 
-int expr(char** str, int* out)
+int expr(char** inp, int* out)
 {
-    if (term(str, out)) {
+    if (term(inp, out)) {
         int r;
-        if (walker_matchc(str, '+') && expr(str, &r)) {
+        if (walker_matchc(inp, '+') && expr(inp, &r)) {
             *out += r;
-        } else if (walker_matchc(str, '-') && expr(str, &r)) {
+        } else if (walker_matchc(inp, '-') && expr(inp, &r)) {
             *out -= r;
         }
         return 1;
@@ -31,13 +32,13 @@ int expr(char** str, int* out)
     return 0;
 }
 
-int term(char** str, int* out)
+int term(char** inp, int* out)
 {
-    if (fact(str, out)) {
+    if (fact(inp, out)) {
         int r;
-        if (walker_matchc(str, '*') && term(str, &r)) {
+        if (walker_matchc(inp, '*') && term(inp, &r)) {
             *out *= r;
-        } else if (walker_matchc(str, '/') && term(str, &r)) {
+        } else if (walker_matchc(inp, '/') && term(inp, &r)) {
             *out /= r;
         }
         return 1;
@@ -45,10 +46,10 @@ int term(char** str, int* out)
     return 0;
 }
 
-int fact(char** str, int* out)
+int fact(char** inp, int* out)
 {
-    return (walker_matchc(str, '(') && expr(str, out) && walker_matchc(str, ')'))
-        || walker_int_out(str, out);
+    return (walker_matchc(inp, '(') && expr(inp, out) && walker_matchc(inp, ')'))
+        || walker_int_out(inp, out);
 }
 
 int jsn(char** inp, char** out);
@@ -59,11 +60,11 @@ int str(char** inp, char** out);
 
 void example_json()
 {
-    char* str = "{ \"name\": \"John\", \"country\": [ \"USA\", \"BRAZIL\" ] }";
+    char* inp = "{ \"name\": \"John\", \"country\": [ \"USA\", \"BRAZIL\" ] }";
 
     char out[64] = "";
     char* pout = out;
-    jsn(&str, &pout);
+    jsn(&inp, &pout);
 
     assert(strcmp(out, "\"John\"; \"USA\"; \"BRAZIL\"; ") == 0);
 }
@@ -122,23 +123,23 @@ int key(char** inp, char** out)
 
 void example()
 {
-    char* str = "point(10 20)\n"
+    char* inp = "point(10 20)\n"
                 "vector(-30 -40)";
 
-    while (walker_more(str)) {
-        auto m = walker_mark(str);
-        if (walker_whiler(&str, 'a', 'z')) {
-            int len = walker_mark_len(str, m);
+    while (walker_more(inp)) {
+        auto m = walker_mark(inp);
+        if (walker_whiler(&inp, 'a', 'z')) {
+            int len = walker_mark_len(inp, m);
             int x = 0, y = 0;
-            if (walker_match(&str, "(")
-                && walker_int_out(&str, &x)
-                && walker_space(&str)
-                && walker_int_out(&str, &y)
-                && walker_match(&str, ")")) {
+            if (walker_match(&inp, "(")
+                && walker_int_out(&inp, &x)
+                && walker_space(&inp)
+                && walker_int_out(&inp, &y)
+                && walker_match(&inp, ")")) {
                 printf("example(): name=%.*s, x=%d, y=%d\n", len, m, x, y);
             }
         }
-        walker_next(&str);
+        walker_next(&inp);
     }
 }
 
