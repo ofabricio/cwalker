@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "cwalker.h"
 
@@ -311,18 +312,6 @@ void test_match()
     assert(strlen(i) == 0);
 }
 
-void test_matchn()
-{
-    char* i = "onetwo";
-
-    assert(walker_matchn(&i, "one", 3) == 3);
-    assert(strlen(i) == 3);
-    assert(walker_matchn(&i, "three", 5) == 0);
-    assert(strlen(i) == 3);
-    assert(walker_matchn(&i, "two", 3) == 3);
-    assert(strlen(i) == 0);
-}
-
 void test_matchc()
 {
     char* i = "one";
@@ -358,18 +347,6 @@ void test_equal()
     assert(walker_equal(i, "ona") == 0);
     assert(strlen(i) == 3);
     assert(walker_equal(i, "two") == 0);
-    assert(strlen(i) == 3);
-}
-
-void test_equaln()
-{
-    char* i = "one";
-
-    assert(walker_equaln(i, "one", 3) == 3);
-    assert(strlen(i) == 3);
-    assert(walker_equaln(i, "one", 2) == 2);
-    assert(strlen(i) == 3);
-    assert(walker_equaln(i, "one", 0) == 0);
     assert(strlen(i) == 3);
 }
 
@@ -474,11 +451,9 @@ int main()
     test_whiler();
     test_space();
     test_match();
-    test_matchn();
     test_matchc();
     test_matchr();
     test_equal();
-    test_equaln();
     test_equalc();
     test_equalr();
     test_any();

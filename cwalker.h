@@ -2,7 +2,6 @@
 #define WALKER_H
 
 #include <stdlib.h>
-#include <string.h>
 
 inline int walker_space(char** str);
 int walker_int_out(char** str, int* out);
@@ -21,11 +20,9 @@ inline int walker_notc(char** str, const char c);
 inline int walker_notr(char** str, const char min, const char max);
 inline int walker_whiler(char** str, const char min, const char max);
 inline int walker_match(char** str, const char* pattern);
-inline int walker_matchn(char** str, const char* pattern, const int n);
 inline int walker_matchc(char** str, const char c);
 inline int walker_matchr(char** str, const char min, const char max);
 inline int walker_equal(const char* str, const char* pattern);
-inline int walker_equaln(const char* str, const char* pattern, int n);
 inline int walker_equalc(const char* str, const char c);
 inline int walker_equalr(const char* str, const char min, const char max);
 inline int walker_any(char** str);
@@ -165,11 +162,6 @@ int walker_match(char** str, const char* pattern)
     return walker_adv(str, walker_equal(*str, pattern));
 }
 
-int walker_matchn(char** str, const char* pattern, const int n)
-{
-    return walker_adv(str, walker_equaln(*str, pattern, n));
-}
-
 int walker_matchr(char** str, const char min, const char max)
 {
     return walker_adv(str, walker_equalr(*str, min, max));
@@ -188,11 +180,6 @@ int walker_equal(const char* str, const char* pattern)
             return 0;
     }
     return p - pattern;
-}
-
-int walker_equaln(const char* str, const char* pattern, int n)
-{
-    return strncmp(str, pattern, n) == 0 ? n : 0;
 }
 
 int walker_equalr(const char* str, const char min, const char max)
