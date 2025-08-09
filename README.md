@@ -98,6 +98,86 @@ int fact(char** str, int* out)
 }
 ```
 
+## Example: json
+
+This example shows how to parse a json and get all string values.
+Note that this example is not production-ready.
+
+```c
+#include <stdio.h>
+#include <string.h>
+#include "walker.h"
+
+int jsn(char** inp, char** out);
+int obj(char** inp, char** out);
+int arr(char** inp, char** out);
+int key(char** inp, char** out);
+int str(char** inp, char** out);
+
+int main()
+{
+    char* str = "{ \"name\": \"John\", \"country\": [ \"USA\", \"BRAZIL\" ] }";
+    char out[64] = "";
+    char* pout = out;
+    jsn(&str, &pout);
+    printf("%s\n", out);
+    // "John"; "USA"; "BRAZIL";
+    return 0;
+}
+
+int jsn(char** inp, char** out)
+{
+    walker_space(inp);
+    return obj(inp, out) || arr(inp, out) || str(inp, out);
+}
+
+int obj(char** inp, char** out)
+{
+    if (walker_matchc(inp, '{')) {
+        if (key(inp, out)) {
+            while (walker_matchc(inp, ',') && key(inp, out)) { }
+        }
+        walker_space(inp);
+        return walker_matchc(inp, '}');
+    }
+    return 0;
+}
+
+int arr(char** inp, char** out)
+{
+    if (walker_matchc(inp, '[')) {
+        if (jsn(inp, out)) {
+            while (walker_matchc(inp, ',') && jsn(inp, out)) { }
+        }
+        walker_space(inp);
+        return walker_matchc(inp, ']');
+    }
+    return 0;
+}
+
+int str(char** inp, char** out)
+{
+    auto m = walker_mark(*inp);
+    if (walker_string(inp, '"')) {
+        if (out) {
+            int l = walker_mark_len(*inp, m);
+            strncpy(*out, m, l);
+            *out += l;
+            strncpy(*out, "; ", 2);
+            *out += 2;
+        }
+        return 1;
+    }
+    return 0;
+}
+
+int key(char** inp, char** out)
+{
+    walker_space(inp);
+    return walker_string(inp, '"') && walker_matchc(inp, ':') && jsn(inp, out);
+}
+```
+
 ## Introduction
 
 This library implements a Mark-Match-Move mechanism,
