@@ -76,11 +76,7 @@ int walker_float_out(char** str, float* out)
 
 int walker_int(char** str)
 {
-    auto m = walker_mark(*str);
-    walker_matchc(str, '-') || walker_matchc(str, '+');
-    if (walker_whiler(str, '0', '9'))
-        return walker_mark_len(*str, m);
-    return walker_back(str, m);
+    return walker_undo(str, walker_mark(*str), (walker_matchc(str, '-') || walker_matchc(str, '+') || 1) && walker_whiler(str, '0', '9'));
 }
 
 int walker_float(char** str)
@@ -166,8 +162,7 @@ int walker_whiler(char** str, const char min, const char max)
 
 int walker_match(char** str, const char* pattern)
 {
-    int n = walker_equal(*str, pattern);
-    return walker_adv(str, n);
+    return walker_adv(str, walker_equal(*str, pattern));
 }
 
 int walker_matchn(char** str, const char* pattern, const int n)
@@ -177,14 +172,12 @@ int walker_matchn(char** str, const char* pattern, const int n)
 
 int walker_matchr(char** str, const char min, const char max)
 {
-    int n = walker_equalr(*str, min, max);
-    return walker_adv(str, n);
+    return walker_adv(str, walker_equalr(*str, min, max));
 }
 
 int walker_matchc(char** str, const char c)
 {
-    int n = walker_equalc(*str, c);
-    return walker_adv(str, n);
+    return walker_adv(str, walker_equalc(*str, c));
 }
 
 int walker_equal(const char* str, const char* pattern)
@@ -209,10 +202,7 @@ int walker_equalc(const char* str, const char c)
 
 int walker_any(char** str)
 {
-    if (walker_more(*str)) {
-        return walker_adv(str, 1);
-    }
-    return 0;
+    return walker_adv(str, walker_more(*str));
 }
 
 int walker_adv(char** str, const size_t n)
