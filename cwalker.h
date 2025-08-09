@@ -1,5 +1,5 @@
-#ifndef WALKER_H
-#define WALKER_H
+#ifndef CWALKER_H
+#define CWALKER_H
 
 #include <stdlib.h>
 
