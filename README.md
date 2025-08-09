@@ -20,11 +20,11 @@ int main()
         if (walker_whiler(&inp, 'a', 'z')) {
             int len = walker_mark_len(inp, m);
             int x = 0, y = 0;
-            if (walker_match(&inp, "(")
+            if (walker_matchc(&inp, '(')
                 && walker_int_out(&inp, &x)
                 && walker_space(&inp)
                 && walker_int_out(&inp, &y)
-                && walker_match(&inp, ")")) {
+                && walker_matchc(&inp, ')')) {
                 printf("name=%.*s, x=%d, y=%d\n", len, m, x, y);
             }
         }
@@ -160,13 +160,11 @@ int str(char** inp, char** out)
 {
     auto m = walker_mark(*inp);
     if (walker_string(inp, '"')) {
-        if (out) {
-            int l = walker_mark_len(*inp, m);
-            strncpy(*out, m, l);
-            *out += l;
-            strncpy(*out, "; ", 2);
-            *out += 2;
-        }
+        int l = walker_mark_len(*inp, m);
+        strncpy(*out, m, l);
+        *out += l;
+        strncpy(*out, "; ", 2);
+        *out += 2;
         return 1;
     }
     return 0;
