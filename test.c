@@ -355,6 +355,8 @@ void test_equal()
 
     assert(walker_equal(i, "one") == 3);
     assert(strlen(i) == 3);
+    assert(walker_equal(i, "ona") == 0);
+    assert(strlen(i) == 3);
     assert(walker_equal(i, "two") == 0);
     assert(strlen(i) == 3);
 }

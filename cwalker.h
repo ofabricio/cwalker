@@ -182,7 +182,12 @@ int walker_matchc(char** str, const char c)
 
 int walker_equal(const char* str, const char* pattern)
 {
-    return walker_equaln(str, pattern, strlen(pattern));
+    const char* p = pattern;
+    while (*p) {
+        if (*str++ != *p++)
+            return 0;
+    }
+    return p - pattern;
 }
 
 int walker_equaln(const char* str, const char* pattern, int n)
