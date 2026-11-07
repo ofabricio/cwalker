@@ -106,7 +106,7 @@ int str(char** inp, char** out)
         int l = walker_mark_len(*inp, m);
         strncpy(*out, m, l);
         *out += l;
-        strncpy(*out, "; ", 2);
+        strncpy(*out, "; ", 3);
         *out += 2;
         return 1;
     }

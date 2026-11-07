@@ -34,10 +34,12 @@ inline const char* walker_mark(const char* str);
 inline int walker_mark_len(const char* str, const char* mark);
 inline int walker_back(char** str, const char* mark);
 
+#if defined(__GNUC__) || defined(__clang__)
 #define walker_0n(matcher) ({ while (matcher) { } 1; })
 #define walker_1n(matcher) ({ int c = 0; while (matcher) { c++; } c > 0; })
-#define walker_peekm(str, cond) walker_peek(str, walker_mark(*(str)), cond)
-#define walker_undom(str, cond) walker_undo(str, walker_mark(*(str)), cond)
+#define walker_peekm(str, cond) ({ auto m = walker_mark(*(str)); walker_peek(str, m, cond); })
+#define walker_undom(str, cond) ({ auto m = walker_mark(*(str)); walker_undo(str, m, cond); })
+#endif
 
 int walker_peek(char** str, const char* mark, const int cond)
 {
@@ -80,13 +82,13 @@ int walker_int(char** str)
 int walker_float(char** str)
 {
     auto m = walker_mark(*str);
-    walker_matchc(str, '-') || walker_matchc(str, '+');
+    (void)(walker_matchc(str, '-') || walker_matchc(str, '+'));
     if (walker_matchc(str, '.') && !walker_whiler(str, '0', '9'))
         return walker_back(str, m);
     if (walker_whiler(str, '0', '9'))
-        walker_matchc(str, '.') && walker_whiler(str, '0', '9');
+        (void)(walker_matchc(str, '.') && walker_whiler(str, '0', '9'));
     if (walker_matchc(str, 'e') || walker_matchc(str, 'E')) {
-        walker_matchc(str, '-') || walker_matchc(str, '+');
+        (void)(walker_matchc(str, '-') || walker_matchc(str, '+'));
         if (!walker_whiler(str, '0', '9'))
             return walker_back(str, m);
     }
