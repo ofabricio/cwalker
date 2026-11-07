@@ -73,7 +73,8 @@ int walker_float_out(char** str, float* out)
 
 int walker_int(char** str)
 {
-    return walker_undo(str, walker_mark(*str), (walker_matchc(str, '-') || walker_matchc(str, '+') || 1) && walker_whiler(str, '0', '9'));
+    auto m = walker_mark(*str);
+    return walker_undo(str, m, (walker_matchc(str, '-') || walker_matchc(str, '+') || 1) && walker_whiler(str, '0', '9'));
 }
 
 int walker_float(char** str)
